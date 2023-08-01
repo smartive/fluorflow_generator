@@ -1,5 +1,5 @@
 builders:
-  story:
+  locator:
     import: 'package:fluorflow_generator/builder.dart'
     builder_factories: ['locatorBuilder']
     build_extensions: { 'lib/$lib$': ['lib/app.locator.dart'] }
