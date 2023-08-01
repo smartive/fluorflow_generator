@@ -1,0 +1,11 @@
+builders:
+  story:
+    import: 'package:fluorflow_generator/builder.dart'
+    builder_factories: ['locatorBuilder']
+    build_extensions: { 'lib/$lib$': ['lib/app.locator.dart'] }
+    auto_apply: root_package
+    build_to: source
+    defaults:
+      options:
+        emitAllReady: true
+        output: 'lib/app.locator.dart'
