@@ -267,6 +267,26 @@ extension Factories on _i1.Locator {
       }
     });
 
+    test('should throw when async singleton on a class has no factory.',
+        () async {
+      try {
+        await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+        
+                @AsyncSingleton()
+                class Svc {}
+              '''
+            },
+            reader: await PackageAssetReader.currentIsolate());
+        fail('should throw');
+      } catch (e) {
+        expect(e, isA<InvalidGenerationSourceError>());
+      }
+    });
+
     test('should throw when factory method has more than 2 params.', () async {
       try {
         await testBuilder(
@@ -423,6 +443,160 @@ Future<void> setupLocator() async {
     dependsOn: [_i3.AsyncSingletonServiceB],
   );
   _i1.locator.registerSingletonAsync(_i3.createService);
+  await _i1.locator.allReady();
+}
+'''
+            },
+            reader: await PackageAssetReader.currentIsolate()));
+
+    test(
+        'should generate registration for a singleton service function.',
+        () async => await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                class Svc {}
+
+                @Singleton()
+                Svc factory() => Svc();
+              '''
+            },
+            outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/locator.dart' as _i1;
+import 'package:a/a.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerSingleton(_i2.factory());
+  await _i1.locator.allReady();
+}
+'''
+            },
+            reader: await PackageAssetReader.currentIsolate()));
+
+    test(
+        'should generate registration for a singleton service function with dependencies.',
+        () async => await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @Singleton()
+                class SvcA {}
+
+                class SvcB {}
+
+                @Singleton(dependencies: [SvcA])
+                SvcB factory() => SvcB();
+              '''
+            },
+            outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/locator.dart' as _i1;
+import 'package:a/a.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerSingleton(_i2.SvcA());
+  _i1.locator.registerSingletonWithDependencies(
+    () => _i2.factory(),
+    dependsOn: [_i2.SvcA],
+  );
+  await _i1.locator.allReady();
+}
+'''
+            },
+            reader: await PackageAssetReader.currentIsolate()));
+
+    test(
+        'should generate registration for a lazy singleton service function.',
+        () async => await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                class Svc {}
+
+                @LazySingleton()
+                Svc factory() => Svc();
+              '''
+            },
+            outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/locator.dart' as _i1;
+import 'package:a/a.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerLazySingleton(_i2.factory);
+  await _i1.locator.allReady();
+}
+'''
+            },
+            reader: await PackageAssetReader.currentIsolate()));
+
+    test(
+        'should generate registration for an async singleton service function.',
+        () async => await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                class Svc {}
+
+                @AsyncSingleton()
+                Future<Svc> factory() async => Svc();
+              '''
+            },
+            outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/locator.dart' as _i1;
+import 'package:a/a.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerSingletonAsync(_i2.factory);
+  await _i1.locator.allReady();
+}
+'''
+            },
+            reader: await PackageAssetReader.currentIsolate()));
+
+    test(
+        'should generate registration for an async singleton service function with dependencies.',
+        () async => await testBuilder(
+            LocatorBuilder(BuilderOptions.empty),
+            {
+              'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @Singleton()
+                class SvcA {}
+
+                class SvcB {}
+
+                @AsyncSingleton(dependencies: [SvcA])
+                Future<SvcB> factory() async => SvcB();
+              '''
+            },
+            outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/locator.dart' as _i1;
+import 'package:a/a.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerSingleton(_i2.SvcA());
+  _i1.locator.registerSingletonAsync(
+    _i2.factory,
+    dependsOn: [_i2.SvcA],
+  );
   await _i1.locator.allReady();
 }
 '''
