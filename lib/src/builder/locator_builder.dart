@@ -66,6 +66,7 @@ class LocatorBuilder implements Builder {
     }
 
     var outputLib = Library((b) => b
+      ..ignoreForFile.add('type=lint')
       ..body.add(Method((b) => b
         ..name = 'setupLocator'
         ..modifier = MethodModifier.async
@@ -79,7 +80,8 @@ class LocatorBuilder implements Builder {
     buildStep.writeAsString(
         output,
         DartFormatter().format(outputLib
-            .accept(DartEmitter(allocator: Allocator.simplePrefixing()))
+            .accept(DartEmitter.scoped(
+                useNullSafetySyntax: true, orderDirectives: true))
             .toString()));
   }
 

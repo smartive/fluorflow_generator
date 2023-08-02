@@ -39,10 +39,12 @@ void main() {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
@@ -73,10 +75,12 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i2.ServiceA());
@@ -113,10 +117,12 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i2.AsyncSingletonServiceA.create);
@@ -143,9 +149,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactory(() => _i2.factory());
@@ -174,9 +182,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactoryParam<_i2.Svc, String, void>((
@@ -216,9 +226,11 @@ extension Factories on _i1.Locator {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactoryParam<_i2.Svc, String, _i2.Ref>((
@@ -324,9 +336,11 @@ extension Factories on _i1.Locator {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
@@ -351,9 +365,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app/my.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
@@ -385,10 +401,12 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonWithDependencies(
@@ -432,10 +450,12 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(
@@ -465,9 +485,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.factory());
@@ -496,9 +518,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.SvcA());
@@ -528,9 +552,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(_i2.factory);
@@ -556,9 +582,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i2.factory);
@@ -587,9 +615,11 @@ Future<void> setupLocator() async {
             },
             outputs: {
               'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/locator.dart' as _i1;
 import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/locator.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.SvcA());
