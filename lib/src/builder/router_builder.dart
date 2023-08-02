@@ -166,17 +166,11 @@ class RouterBuilder implements Builder {
               refer('RouteFactory', 'package:flutter/widgets.dart')))
           .statement)
       ..body.addAll(routeArgs)
-      ..body.add(Method((b) => b
-        ..name = 'onGenerateRoute'
-        ..returns = refer('Route?', 'package:flutter/widgets.dart')
-        ..requiredParameters.add(Parameter((b) => b
-          ..name = 'settings'
-          ..type = refer('RouteSettings', 'package:flutter/widgets.dart')))
-        ..body = refer('_pages')
-            .index(refer('settings').property('name'))
-            .nullSafeProperty('call')
-            .call([refer('settings')]).code
-        ..lambda = true))
+      ..body.add(declareFinal('onGenerateRoute')
+          .assign(
+              refer('generateRouteFactory', 'package:fluorflow/services.dart')
+                  .call([refer('_pages')]))
+          .statement)
       ..body.add(navExtension));
 
     buildStep.writeAsString(
