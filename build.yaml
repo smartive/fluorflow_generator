@@ -8,4 +8,15 @@ builders:
     defaults:
       options:
         emitAllReady: true
+        # TODO: register services
         output: 'lib/app.locator.dart'
+
+  router:
+    import: 'package:fluorflow_generator/builder.dart'
+    builder_factories: ['routerBuilder']
+    build_extensions: { 'lib/$lib$': ['lib/app.router.dart'] }
+    auto_apply: root_package
+    build_to: source
+    defaults:
+      options:
+        output: 'lib/app.router.dart'

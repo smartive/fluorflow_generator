@@ -60,6 +60,14 @@ class LocatorBuilder implements Builder {
       return;
     }
 
+    // TODO allow config of this
+    setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
+      ..addExpression(locatorRef.property('registerLazySingleton').call([
+        Method((b) => b
+          ..body = refer('NavigationService', 'package:fluorflow/services.dart')
+              .newInstance([]).code).closure,
+      ])));
+
     if (options.emitAllReady) {
       setupLocatorBlock = setupLocatorBlock.rebuild((b) =>
           b.addExpression(locatorRef.property('allReady').call([]).awaited));
