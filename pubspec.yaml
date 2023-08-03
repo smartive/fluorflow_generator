@@ -11,10 +11,10 @@ dependencies:
   code_builder: ^4.5.0
   dart_style: ^2.3.2
   fluorflow:
-    path: ../fluorflow
-    # git:
-    #   url: git@github.com:smartive/fluorflow.git
-    #   ref: main
+    # path: ../fluorflow
+    git:
+      url: git@github.com:smartive/fluorflow.git
+      ref: main
   glob: ^2.1.2
   path: ^1.8.3
   recase: ^4.1.0

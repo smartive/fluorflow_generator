@@ -37,7 +37,7 @@ class RouterBuilder implements Builder {
           ..name = 'path'
           ..toThis = true)))));
 
-    final pages = <String, Method>{};
+    final pages = <Expression, Method>{};
 
     final routeArgs = <Class>[];
 
@@ -91,7 +91,7 @@ class RouterBuilder implements Builder {
                 ..required = p.isRequired
                 ..defaultTo =
                     p.hasDefaultValue ? Code(p.defaultValueCode!) : null
-                ..named = p.isNamed)))))));
+                ..named = true)))))));
         }
 
         // Create the navigation to extension.
@@ -131,7 +131,9 @@ class RouterBuilder implements Builder {
                       annotation.read('pageBuilder').typeValue.element!)
                   .toString()),
         };
-        pages[path] = Method((b) => b
+        pages[refer(routeEnum.name)
+            .property(element.displayName.camelCase)
+            .property('path')] = Method((b) => b
           ..requiredParameters.add(Parameter((b) => b.name = 'data'))
           ..body = builder.newInstance([], {
             'settings': refer('data'),
@@ -166,7 +168,7 @@ class RouterBuilder implements Builder {
       }
     }
 
-    if (routeEnum.fields.isEmpty) {
+    if (pages.isEmpty) {
       return;
     }
 
