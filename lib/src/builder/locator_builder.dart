@@ -12,6 +12,10 @@ extension on BuilderOptions {
   String get output => config['output'] ?? 'lib/app.locator.dart';
 
   bool get emitAllReady => config['emitAllReady'] ?? true;
+
+  Map<String, bool> get registerServices => config['register_services'] ?? {};
+
+  bool get registerNavigationService => registerServices['navigation'] ?? true;
 }
 
 class LocatorBuilder implements Builder {
@@ -60,13 +64,15 @@ class LocatorBuilder implements Builder {
       return;
     }
 
-    // TODO allow config of this
-    setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
-      ..addExpression(locatorRef.property('registerLazySingleton').call([
-        Method((b) => b
-          ..body = refer('NavigationService', 'package:fluorflow/services.dart')
-              .newInstance([]).code).closure,
-      ])));
+    if (options.registerNavigationService) {
+      setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
+        ..addExpression(locatorRef.property('registerLazySingleton').call([
+          Method((b) => b
+            ..body =
+                refer('NavigationService', 'package:fluorflow/services.dart')
+                    .newInstance([]).code).closure,
+        ])));
+    }
 
     if (options.emitAllReady) {
       setupLocatorBlock = setupLocatorBlock.rebuild((b) =>
