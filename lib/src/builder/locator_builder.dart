@@ -13,7 +13,8 @@ extension on BuilderOptions {
 
   bool get emitAllReady => config['emitAllReady'] ?? true;
 
-  Map<String, bool> get registerServices => config['register_services'] ?? {};
+  Map<String, dynamic> get registerServices =>
+      config['register_services'] ?? {};
 
   bool get registerNavigationService => registerServices['navigation'] ?? true;
 }
@@ -30,12 +31,12 @@ class LocatorBuilder implements Builder {
     final output = AssetId(buildStep.inputId.package, options.output);
     final resolver = buildStep.resolver;
 
-    final locatorRef = refer('locator', 'package:fluorflow/locator.dart');
+    final locatorRef = refer('locator', 'package:fluorflow/fluorflow.dart');
 
     var setupLocatorBlock = Block();
     var factoryExtension = Extension((b) => b
       ..name = 'Factories'
-      ..on = refer('Locator', 'package:fluorflow/locator.dart'));
+      ..on = refer('Locator', 'package:fluorflow/fluorflow.dart'));
 
     await for (final assetId in buildStep.findAssets(_allDartFilesInLib)) {
       if (!await resolver.isLibrary(assetId)) {
@@ -69,7 +70,7 @@ class LocatorBuilder implements Builder {
         ..addExpression(locatorRef.property('registerLazySingleton').call([
           Method((b) => b
             ..body =
-                refer('NavigationService', 'package:fluorflow/services.dart')
+                refer('NavigationService', 'package:fluorflow/fluorflow.dart')
                     .newInstance([]).code).closure,
         ])));
     }

@@ -45,13 +45,12 @@ void main() {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i4;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
   _i1.locator.registerSingleton(_i3.ServiceB());
-  _i1.locator.registerLazySingleton(() => _i4.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -85,8 +84,7 @@ Future<void> setupLocator() async {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i4;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonWithDependencies(
@@ -94,7 +92,7 @@ Future<void> setupLocator() async {
     dependsOn: [_i3.ServiceB],
   );
   _i1.locator.registerSingleton(_i3.ServiceB());
-  _i1.locator.registerLazySingleton(() => _i4.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -121,12 +119,11 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.factory());
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -156,8 +153,7 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.SvcA());
@@ -165,7 +161,7 @@ Future<void> setupLocator() async {
     () => _i2.factory(),
     dependsOn: [_i2.SvcA],
   );
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -199,13 +195,12 @@ Future<void> setupLocator() async {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i4;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i2.ServiceA());
   _i1.locator.registerLazySingleton(() => _i3.ServiceB());
-  _i1.locator.registerLazySingleton(() => _i4.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -232,12 +227,11 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(_i2.factory);
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -277,13 +271,12 @@ Future<void> setupLocator() async {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i4;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i2.AsyncSingletonServiceA.create);
   _i1.locator.registerSingletonAsync(_i3.createService);
-  _i1.locator.registerLazySingleton(() => _i4.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -345,8 +338,7 @@ Future<void> setupLocator() async {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
 import 'package:a/sub/b.dart' as _i3;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i4;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(
@@ -354,7 +346,7 @@ Future<void> setupLocator() async {
     dependsOn: [_i3.AsyncSingletonServiceB],
   );
   _i1.locator.registerSingletonAsync(_i3.createService);
-  _i1.locator.registerLazySingleton(() => _i4.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -381,12 +373,11 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i2.factory);
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -416,8 +407,7 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.SvcA());
@@ -425,7 +415,7 @@ Future<void> setupLocator() async {
     _i2.factory,
     dependsOn: [_i2.SvcA],
   );
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -454,12 +444,11 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactory(() => _i2.factory());
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -489,8 +478,7 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactoryParam<_i2.Svc, String, void>((
@@ -498,7 +486,7 @@ Future<void> setupLocator() async {
     _,
   ) =>
       _i2.factory(p1));
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 
@@ -535,8 +523,7 @@ extension Factories on _i1.Locator {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerFactoryParam<_i2.Svc, String, _i2.Ref>((
@@ -547,7 +534,7 @@ Future<void> setupLocator() async {
         p1,
         p2,
       ));
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 
@@ -630,12 +617,11 @@ extension Factories on _i1.Locator {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
 }
 '''
               },
@@ -661,12 +647,11 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
-import 'package:fluorflow/services.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
-  _i1.locator.registerLazySingleton(() => _i3.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   await _i1.locator.allReady();
 }
 '''
@@ -693,7 +678,7 @@ Future<void> setupLocator() async {
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:a/a.dart' as _i2;
-import 'package:fluorflow/locator.dart' as _i1;
+import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());

@@ -43,7 +43,7 @@ class RouterBuilder implements Builder {
 
     var navExtension = Extension((b) => b
       ..name = 'RouteNavigation'
-      ..on = refer('NavigationService', 'package:fluorflow/services.dart'));
+      ..on = refer('NavigationService', 'package:fluorflow/fluorflow.dart'));
 
     await for (final assetId in buildStep.findAssets(_allDartFilesInLib)) {
       if (!await resolver.isLibrary(assetId)) {
@@ -118,10 +118,22 @@ class RouterBuilder implements Builder {
         }
 
         // Add the route object to the pages map.
+        final builder = switch (annotation.read('pageBuilder').isNull) {
+          true => refer('NoTransitionPageRouteBuilder',
+              'package:fluorflow/fluorflow.dart'),
+          false => refer(
+              annotation
+                  .read('pageBuilder')
+                  .typeValue
+                  .getDisplayString(withNullability: false),
+              lib
+                  .pathToElement(
+                      annotation.read('pageBuilder').typeValue.element!)
+                  .toString()),
+        };
         pages[path] = Method((b) => b
           ..requiredParameters.add(Parameter((b) => b.name = 'data'))
-          ..body = refer('PageRouteBuilder', 'package:flutter/widgets.dart')
-              .newInstance([], {
+          ..body = builder.newInstance([], {
             'settings': refer('data'),
             'pageBuilder': Method((b) => b
               ..requiredParameters.add(Parameter((b) => b.name = '_'))
@@ -158,7 +170,7 @@ class RouterBuilder implements Builder {
       return;
     }
 
-    var outputLib = Library((b) => b
+    final outputLib = Library((b) => b
       ..ignoreForFile.add('type=lint')
       ..body.add(routeEnum)
       ..body.add(declareFinal('_pages')
@@ -168,7 +180,7 @@ class RouterBuilder implements Builder {
       ..body.addAll(routeArgs)
       ..body.add(declareFinal('onGenerateRoute')
           .assign(
-              refer('generateRouteFactory', 'package:fluorflow/services.dart')
+              refer('generateRouteFactory', 'package:fluorflow/fluorflow.dart')
                   .call([refer('_pages')]))
           .statement)
       ..body.add(navExtension));
