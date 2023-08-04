@@ -108,7 +108,8 @@ class RouterBuilder implements Builder {
           navExtension = _addExtension(navExtension, lib,
               prefix: 'replaceWith',
               displayName: element.displayName,
-              params: params);
+              params: params,
+              withReturnFuture: false);
         }
 
         if (annotation.read('rootToExtension').boolValue) {
@@ -116,7 +117,8 @@ class RouterBuilder implements Builder {
               prefix: 'rootTo',
               displayName: element.displayName,
               params: params,
-              withPreventDuplicates: false);
+              withPreventDuplicates: false,
+              withReturnFuture: false);
         }
 
         // Add the route object to the pages map.
@@ -216,24 +218,23 @@ class RouterBuilder implements Builder {
           {required String prefix,
           required String displayName,
           required Iterable<ParameterElement> params,
+          bool withReturnFuture = true,
           bool withPreventDuplicates = true}) =>
       ext.rebuild((b) => b
         ..methods.add(Method((b) => b
           ..name = '$prefix${displayName.pascalCase}'
-          ..returns = refer('Future<T?>?')
-          ..types.add(refer('T'))
+          ..returns = refer(withReturnFuture ? 'Future<T?>?' : 'void')
+          ..types.addAll([
+            if (withReturnFuture) refer('T'),
+          ])
           ..optionalParameters.addAll(params.map((p) => Parameter((b) => b
             ..name = p.name
             ..type = refer(p.type.getDisplayString(withNullability: true),
                 lib.pathToElement(p.type.element!).toString())
             ..required = p.isRequired
             ..defaultTo = p.hasDefaultValue ? Code(p.defaultValueCode!) : null
-            ..named = p.isNamed)))
+            ..named = true)))
           ..optionalParameters.addAll([
-            Parameter((b) => b
-              ..name = 'id'
-              ..type = refer('int?')
-              ..named = true),
             if (withPreventDuplicates)
               Parameter((b) => b
                 ..name = 'preventDuplicates'
@@ -244,7 +245,6 @@ class RouterBuilder implements Builder {
           ..body = refer(prefix).call([
             refer('AppRoute.${displayName.camelCase}.path'),
           ], {
-            'id': refer('id'),
             ...withPreventDuplicates
                 ? {
                     'preventDuplicates': refer('preventDuplicates'),
