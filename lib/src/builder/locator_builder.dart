@@ -61,10 +61,6 @@ class LocatorBuilder implements Builder {
           assetId, lib, locatorRef, setupLocatorBlock, factoryExtension);
     }
 
-    if (setupLocatorBlock.statements.isEmpty) {
-      return;
-    }
-
     if (options.registerNavigationService) {
       setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
         ..addExpression(locatorRef.property('registerLazySingleton').call([
@@ -73,6 +69,10 @@ class LocatorBuilder implements Builder {
                 refer('NavigationService', 'package:fluorflow/fluorflow.dart')
                     .newInstance([]).code).closure,
         ])));
+    }
+
+    if (setupLocatorBlock.statements.isEmpty) {
+      return;
     }
 
     if (options.emitAllReady) {

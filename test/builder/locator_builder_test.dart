@@ -12,12 +12,24 @@ void main() {
             testBuilder(LocatorBuilder(BuilderOptions.empty), {}, outputs: {}));
 
     test(
-        'should not generate something when no injectable annotations are present.',
+        'should register the services when no other things are registered.',
         () => testBuilder(LocatorBuilder(BuilderOptions.empty), {
               'a|lib/a.dart': '''
                 class Service {}
               '''
-            }, outputs: {}));
+            }, outputs: {
+              'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  await _i1.locator.allReady();
+}
+'''
+            }));
 
     group('for Singletons', () {
       test(
@@ -597,6 +609,21 @@ extension Factories on _i1.Locator {
     });
 
     group('with Builder Configuration', () {
+      test(
+          'should not generate something when no services are registered and all default services are disabled.',
+          () => testBuilder(
+                  LocatorBuilder(BuilderOptions({
+                    'register_services': {
+                      'navigation': false,
+                    }
+                  })),
+                  {
+                    'a|lib/a.dart': '''
+                class Service {}
+              '''
+                  },
+                  outputs: {}));
+
       test(
           'should not emit allReady when configured.',
           () async => await testBuilder(
