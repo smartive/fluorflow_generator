@@ -122,15 +122,15 @@ class RouterBuilder implements Builder {
         // Add the route object to the pages map.
         final builder = switch ((
           getEnumFromAnnotation(
-              Transition.values,
-              annotation.read('transition').objectValue,
-              Transition.noTransition),
+              RouteBuilder.values,
+              annotation.read('routeBuilder').objectValue,
+              RouteBuilder.noTransition),
           annotation.read('pageRouteBuilder').isNull
         )) {
-          (Transition.custom, true) => throw InvalidGenerationSourceError(
-              'You must provide a pageRouteBuilder when using a custom transition.',
+          (RouteBuilder.custom, true) => throw InvalidGenerationSourceError(
+              'You must provide a pageRouteBuilder when using a custom routeBuilder.',
               element: element),
-          (Transition.custom, false) => refer(
+          (RouteBuilder.custom, false) => refer(
               annotation
                   .read('pageRouteBuilder')
                   .typeValue

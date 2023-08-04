@@ -365,7 +365,7 @@ extension RouteNavigation on _i2.NavigationService {
                   import 'package:flutter/material.dart';
                   import 'b.dart';
 
-                  @Routable(transition: Transition.custom, pageRouteBuilder: CustomBuilder)
+                  @Routable(routeBuilder: RouteBuilder.custom, pageRouteBuilder: CustomBuilder)
                   class View extends StatelessWidget {}
               ''',
                 'a|lib/b.dart': '''
@@ -445,7 +445,7 @@ extension RouteNavigation on _i4.NavigationService {
                   import 'package:flutter/material.dart';
                   import 'b.dart';
 
-                  @Routable(transition: Transition.custom)
+                  @Routable(routeBuilder: RouteBuilder.custom)
                   class View extends StatelessWidget {}
               ''',
                 'a|lib/b.dart': '''
@@ -461,8 +461,8 @@ extension RouteNavigation on _i4.NavigationService {
         }
       });
 
-      for (final (transition, resultBuilder) in Transition.values
-          .where((t) => t != Transition.custom)
+      for (final (transition, resultBuilder) in RouteBuilder.values
+          .where((t) => t != RouteBuilder.custom)
           .map((t) => (t, '${t.name.pascalCase}PageRouteBuilder'))) {
         test(
             'should use correct page route builder '
@@ -474,7 +474,7 @@ extension RouteNavigation on _i4.NavigationService {
                     import 'package:fluorflow/annotations.dart';
                     import 'package:flutter/material.dart';
 
-                    @Routable(transition: Transition.${transition.name})
+                    @Routable(routeBuilder: RouteBuilder.${transition.name})
                     class View extends StatelessWidget {}
                   ''',
                 },
