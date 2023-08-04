@@ -9,6 +9,8 @@ import 'package:glob/glob.dart';
 import 'package:recase/recase.dart';
 import 'package:source_gen/source_gen.dart';
 
+import '../utils.dart';
+
 extension on BuilderOptions {
   String get output => config['output'] ?? 'lib/app.router.dart';
 }
@@ -118,19 +120,29 @@ class RouterBuilder implements Builder {
         }
 
         // Add the route object to the pages map.
-        final builder = switch (annotation.read('pageBuilder').isNull) {
-          true => refer('NoTransitionPageRouteBuilder',
-              'package:fluorflow/fluorflow.dart'),
-          false => refer(
+        final builder = switch ((
+          getEnumFromAnnotation(
+              Transition.values,
+              annotation.read('transition').objectValue,
+              Transition.noTransition),
+          annotation.read('pageRouteBuilder').isNull
+        )) {
+          (Transition.custom, true) => throw InvalidGenerationSourceError(
+              'You must provide a pageRouteBuilder when using a custom transition.',
+              element: element),
+          (Transition.custom, false) => refer(
               annotation
-                  .read('pageBuilder')
+                  .read('pageRouteBuilder')
                   .typeValue
                   .getDisplayString(withNullability: false),
               lib
                   .pathToElement(
-                      annotation.read('pageBuilder').typeValue.element!)
+                      annotation.read('pageRouteBuilder').typeValue.element!)
                   .toString()),
+          (final t, _) => refer('${t.name.pascalCase}PageRouteBuilder',
+              'package:fluorflow/fluorflow.dart'),
         };
+
         pages[refer(routeEnum.name)
             .property(element.displayName.camelCase)
             .property('path')] = Method((b) => b

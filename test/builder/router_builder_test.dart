@@ -1,6 +1,9 @@
 import 'package:build/build.dart';
 import 'package:build_test/build_test.dart';
+import 'package:fluorflow/annotations.dart';
 import 'package:fluorflow_generator/src/builder/router_builder.dart';
+import 'package:recase/recase.dart';
+import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -362,7 +365,7 @@ extension RouteNavigation on _i2.NavigationService {
                   import 'package:flutter/material.dart';
                   import 'b.dart';
 
-                  @Routable(pageBuilder: CustomBuilder)
+                  @Routable(transition: Transition.custom, pageRouteBuilder: CustomBuilder)
                   class View extends StatelessWidget {}
               ''',
                 'a|lib/b.dart': '''
@@ -429,6 +432,110 @@ extension RouteNavigation on _i4.NavigationService {
 ''',
               },
               reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should throw when custom page is requested, but no page builder is provided.',
+          () async {
+        try {
+          await testBuilder(
+              RouterBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                  import 'package:fluorflow/annotations.dart';
+                  import 'package:flutter/material.dart';
+                  import 'b.dart';
+
+                  @Routable(transition: Transition.custom)
+                  class View extends StatelessWidget {}
+              ''',
+                'a|lib/b.dart': '''
+                import 'package:flutter/material.dart';
+
+                class CustomBuilder extends PageRouteBuilder {}
+              '''
+              },
+              reader: await PackageAssetReader.currentIsolate());
+          fail('Should have thrown');
+        } catch (e) {
+          expect(e, isA<InvalidGenerationSourceError>());
+        }
+      });
+
+      for (final (transition, resultBuilder) in Transition.values
+          .where((t) => t != Transition.custom)
+          .map((t) => (t, '${t.name.pascalCase}PageRouteBuilder'))) {
+        test(
+            'should use correct page route builder '
+            '($resultBuilder) for transition (${transition.name}).',
+            () async => await testBuilder(
+                RouterBuilder(BuilderOptions.empty),
+                {
+                  'a|lib/a.dart': '''
+                    import 'package:fluorflow/annotations.dart';
+                    import 'package:flutter/material.dart';
+
+                    @Routable(transition: Transition.${transition.name})
+                    class View extends StatelessWidget {}
+                  ''',
+                },
+                outputs: {
+                  'a|lib/app.router.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:a/a.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i2;
+import 'package:flutter/widgets.dart' as _i1;
+
+enum AppRoute {
+  view('/view');
+
+  const AppRoute(this.path);
+
+  final String path;
+}
+
+final _pages = <String, _i1.RouteFactory>{
+  AppRoute.view.path: (data) => _i2.$resultBuilder(
+        settings: data,
+        pageBuilder: (
+          _,
+          __,
+          ___,
+        ) =>
+            const _i3.View(),
+      )
+};
+final onGenerateRoute = _i2.generateRouteFactory(_pages);
+
+extension RouteNavigation on _i2.NavigationService {
+  Future<T?>? navigateToView<T>({
+    int? id,
+    bool preventDuplicates = true,
+  }) =>
+      navigateTo(
+        AppRoute.view.path,
+        id: id,
+        preventDuplicates: preventDuplicates,
+      );
+  Future<T?>? replaceWithView<T>({
+    int? id,
+    bool preventDuplicates = true,
+  }) =>
+      replaceWith(
+        AppRoute.view.path,
+        id: id,
+        preventDuplicates: preventDuplicates,
+      );
+  Future<T?>? rootToView<T>({int? id}) => rootTo(
+        AppRoute.view.path,
+        id: id,
+      );
+}
+''',
+                },
+                reader: await PackageAssetReader.currentIsolate()));
+      }
 
       test(
           'should not generate route arguments for only "key" argument.',
@@ -1220,6 +1327,81 @@ extension RouteNavigation on _i2.NavigationService {
         AppRoute.view.path,
         id: id,
         arguments: ViewArguments(arg: arg),
+      );
+}
+''',
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+    });
+
+    group('with Builder Configuration', () {
+      test(
+          'should use custom output if configured.',
+          () async => await testBuilder(
+              RouterBuilder(BuilderOptions({
+                'output': 'lib/app/my.router.dart',
+              })),
+              {
+                'a|lib/a.dart': '''
+                  import 'package:fluorflow/annotations.dart';
+                  import 'package:flutter/material.dart';
+
+                  @Routable()
+                  class View extends StatelessWidget {}
+              '''
+              },
+              outputs: {
+                'a|lib/app/my.router.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:a/a.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i2;
+import 'package:flutter/widgets.dart' as _i1;
+
+enum AppRoute {
+  view('/view');
+
+  const AppRoute(this.path);
+
+  final String path;
+}
+
+final _pages = <String, _i1.RouteFactory>{
+  AppRoute.view.path: (data) => _i2.NoTransitionPageRouteBuilder(
+        settings: data,
+        pageBuilder: (
+          _,
+          __,
+          ___,
+        ) =>
+            const _i3.View(),
+      )
+};
+final onGenerateRoute = _i2.generateRouteFactory(_pages);
+
+extension RouteNavigation on _i2.NavigationService {
+  Future<T?>? navigateToView<T>({
+    int? id,
+    bool preventDuplicates = true,
+  }) =>
+      navigateTo(
+        AppRoute.view.path,
+        id: id,
+        preventDuplicates: preventDuplicates,
+      );
+  Future<T?>? replaceWithView<T>({
+    int? id,
+    bool preventDuplicates = true,
+  }) =>
+      replaceWith(
+        AppRoute.view.path,
+        id: id,
+        preventDuplicates: preventDuplicates,
+      );
+  Future<T?>? rootToView<T>({int? id}) => rootTo(
+        AppRoute.view.path,
+        id: id,
       );
 }
 ''',
