@@ -21,3 +21,13 @@ builders:
     defaults:
       options:
         output: 'lib/app.router.dart'
+
+  dialog:
+    import: 'package:fluorflow_generator/builder.dart'
+    builder_factories: ['dialogBuilder']
+    build_extensions: { 'lib/$lib$': ['lib/app.dialogs.dart'] }
+    auto_apply: root_package
+    build_to: source
+    defaults:
+      options:
+        output: 'lib/app.dialogs.dart'
