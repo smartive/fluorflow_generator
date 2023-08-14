@@ -17,6 +17,8 @@ extension on BuilderOptions {
       config['register_services'] ?? {};
 
   bool get registerNavigationService => registerServices['navigation'] ?? true;
+
+  bool get registerDialogService => registerServices['dialog'] ?? true;
 }
 
 class LocatorBuilder implements Builder {
@@ -68,6 +70,15 @@ class LocatorBuilder implements Builder {
             ..body =
                 refer('NavigationService', 'package:fluorflow/fluorflow.dart')
                     .newInstance([]).code).closure,
+        ])));
+    }
+
+    if (options.registerDialogService) {
+      setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
+        ..addExpression(locatorRef.property('registerLazySingleton').call([
+          Method((b) => b
+            ..body = refer('DialogService', 'package:fluorflow/fluorflow.dart')
+                .newInstance([]).code).closure,
         ])));
     }
 
