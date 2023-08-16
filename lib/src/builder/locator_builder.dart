@@ -350,7 +350,8 @@ class LocatorBuilder implements Builder {
             ],
             {},
             [
-              refer(func.returnType.toString(), assetId.uri.toString()),
+              refer(func.returnType.getDisplayString(withNullability: true),
+                  lib.pathToElement(func.returnType.element!).toString()),
               if (func.parameters.isNotEmpty)
                 refer(
                     func.parameters.first.type.element!.displayName,
@@ -370,7 +371,9 @@ class LocatorBuilder implements Builder {
         // add the factory to the Locator extension for convenience
         var ext = Method((b) => b
           ..name = 'get${func.returnType.toString()}'
-          ..returns = refer(func.returnType.toString(), assetId.uri.toString())
+          ..returns = refer(
+              func.returnType.getDisplayString(withNullability: true),
+              lib.pathToElement(func.returnType.element!).toString())
           ..body = refer('get').call([], {
             'param1': refer(func.parameters.first.displayName),
             ...func.parameters.length == 2
