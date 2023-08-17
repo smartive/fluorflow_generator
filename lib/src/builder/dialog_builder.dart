@@ -12,7 +12,7 @@ import 'package:source_gen/source_gen.dart';
 import '../utils.dart';
 
 extension on BuilderOptions {
-  String get output => config['output'] ?? 'lib/app.router.dart';
+  String get output => config['output'] ?? 'lib/app.dialogs.dart';
 }
 
 class DialogBuilder implements Builder {
@@ -29,7 +29,7 @@ class DialogBuilder implements Builder {
     final configChecker = TypeChecker.fromRuntime(DialogConfig);
     const dialogSuperTypes = [
       'FluorFlowSimpleDialog',
-      'FluorFlowSimple',
+      'FluorFlowDialog',
     ];
 
     var extension = Extension((b) => b
