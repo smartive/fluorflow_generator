@@ -13,6 +13,20 @@ builders:
           navigation: true
           dialog: true
 
+  testLocator:
+    import: 'package:fluorflow_generator/builder.dart'
+    builder_factories: ['testLocatorBuilder']
+    build_extensions: { 'lib/$lib$': ['test/test.locator.dart'] }
+    auto_apply: root_package
+    build_to: source
+    applies_builders:
+      - 'mockito:mockBuilder'
+    runs_before:
+      - 'mockito:mockBuilder'
+    defaults:
+      options:
+        output: 'test/test.locator.dart'
+
   router:
     import: 'package:fluorflow_generator/builder.dart'
     builder_factories: ['routerBuilder']
