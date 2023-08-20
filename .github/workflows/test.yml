@@ -15,11 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
       - run: dart format --fix --set-exit-if-changed .
       - run: dart analyze
-      - run: dart test
+      - run: dart test --coverage
       # - name: Setup LCOV
       #   uses: hrishikesh-kadam/setup-lcov@v1
       # - name: Report code coverage
