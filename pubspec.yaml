@@ -14,7 +14,7 @@ dependencies:
   fluorflow:
     # path: ../fluorflow
     git:
-      url: git@github.com:smartive/fluorflow.git
+      url: https://github.com/smartive/fluorflow.git
       ref: main
   glob:
   path:
