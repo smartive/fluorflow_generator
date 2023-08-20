@@ -26,6 +26,9 @@ builders:
     defaults:
       options:
         output: 'test/test.locator.dart'
+        services:
+          navigation: true
+          dialog: true
 
   router:
     import: 'package:fluorflow_generator/builder.dart'

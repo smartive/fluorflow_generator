@@ -816,7 +816,7 @@ Future<void> setupLocator() async {
               reader: await PackageAssetReader.currentIsolate()));
 
       test(
-          'should have configurable output location.',
+          'should use custom output if configured.',
           () async => await testBuilder(
               LocatorBuilder(BuilderOptions({
                 'output': 'lib/app/my.locator.dart',

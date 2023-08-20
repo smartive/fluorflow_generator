@@ -12,6 +12,12 @@ import 'package:source_gen/source_gen.dart';
 
 extension on BuilderOptions {
   String get output => config['output'] ?? 'test/test.locator.dart';
+
+  Map<String, dynamic> get services => config['services'] ?? {};
+
+  bool get mockNavService => services['navigation'] ?? true;
+
+  bool get mockDialogService => services['dialog'] ?? true;
 }
 
 class TestLocatorBuilder implements Builder {
@@ -50,6 +56,30 @@ class TestLocatorBuilder implements Builder {
       TypeChecker.fromRuntime(LazySingleton),
     ]);
 
+    void addNonFactoryMock(Reference originalType, Reference mockType) {
+      outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
+        ..name = 'get${mockType.symbol}'
+        ..returns = mockType
+        ..body = Block.of([
+          Code.scope(
+              (a) => 'if (${a(locatorRef)}.isRegistered<${a(originalType)}>())'
+                  '{${a(locatorRef)}.unregister<${a(originalType)}>();}'),
+          declareFinal('service').assign(mockType.newInstance([])).statement,
+          locatorRef
+              .property('registerSingleton')
+              .call([refer('service')], {}, [originalType]).statement,
+          refer('service').returned.statement,
+        ]))));
+    }
+
+    void addInternalType(Reference internalType) {
+      final mockType = refer('Mock${internalType.symbol}', mocksUri);
+      mockedTypes.add(internalType);
+      addNonFactoryMock(internalType, mockType);
+      setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild(
+          (b) => b.addExpression(refer('get${mockType.symbol}').call([])));
+    }
+
     await for (final assetId in buildStep.findAssets(_allDartFilesInLib)) {
       if (!await resolver.isLibrary(assetId)) {
         continue;
@@ -84,21 +114,7 @@ class TestLocatorBuilder implements Builder {
         mockedTypes.add(originalType);
 
         if (annotation.instanceOf(nonFactory)) {
-          outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
-            ..name = 'get${mockType.symbol}'
-            ..returns = mockType
-            ..body = Block.of([
-              Code.scope((a) =>
-                  'if (${a(locatorRef)}.isRegistered<${a(originalType)}>())'
-                  '{${a(locatorRef)}.unregister<${a(originalType)}>();}'),
-              declareFinal('service')
-                  .assign(mockType.newInstance([]))
-                  .statement,
-              locatorRef
-                  .property('registerSingleton')
-                  .call([refer('service')], {}, [originalType]).statement,
-              refer('service').returned.statement,
-            ]))));
+          addNonFactoryMock(originalType, mockType);
         } else {
           outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
             ..name = 'get${mockType.symbol}'
@@ -121,6 +137,16 @@ class TestLocatorBuilder implements Builder {
         setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild(
             (b) => b.addExpression(refer('get${mockType.symbol}').call([])));
       }
+    }
+
+    if (options.mockNavService) {
+      addInternalType(
+          refer('NavigationService', 'package:fluorflow/fluorflow.dart'));
+    }
+
+    if (options.mockDialogService) {
+      addInternalType(
+          refer('DialogService', 'package:fluorflow/fluorflow.dart'));
     }
 
     setupTestLocatorMethod = setupTestLocatorMethod.rebuild((b) => b
