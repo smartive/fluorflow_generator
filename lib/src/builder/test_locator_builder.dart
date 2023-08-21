@@ -148,8 +148,9 @@ class TestLocatorBuilder implements Builder {
           .where((element) =>
               element.annotation.read('includeInTestLocator').boolValue)) {
         setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild((b) =>
-            b.addExpression(
-                refer(element.displayName, assetId.uri.toString()).call([])));
+            b.addExpression(refer(
+                    element.displayName, lib.pathToElement(element).toString())
+                .call([])));
       }
     }
 

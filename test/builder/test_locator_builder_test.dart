@@ -889,11 +889,10 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'asset:a/test/a.dart' as _i4;
-
 import 'package:fluorflow/fluorflow.dart' as _i2;
 import 'package:mockito/annotations.dart' as _i3;
 
+import 'a.dart' as _i4;
 import 'test.locator.mocks.dart' as _i1;
 
 _i1.MockNavigationService getMockNavigationService() {
