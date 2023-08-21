@@ -23,6 +23,15 @@ extension on BuilderOptions {
 
 class LocatorBuilder implements Builder {
   static final _allDartFilesInLib = Glob('{lib/*.dart,lib/**/*.dart}');
+  static final _singletonAnnotation = TypeChecker.fromRuntime(Singleton);
+  static final _lazySingletonAnnotation =
+      TypeChecker.fromRuntime(LazySingleton);
+  static final _asyncSingletonAnnotation =
+      TypeChecker.fromRuntime(AsyncSingleton);
+  static final _factoryAnnotation = TypeChecker.fromRuntime(Factory);
+  static final _ignoreAnnotation = TypeChecker.fromRuntime(IgnoreDependency);
+  static final _customLocatorAnnotation =
+      TypeChecker.fromRuntime(CustomLocatorFunction);
 
   final BuilderOptions options;
 
@@ -116,18 +125,25 @@ class LocatorBuilder implements Builder {
         r'lib/$lib$': [options.output],
       };
 
+  bool _hasIgnoreAnnotation(AnnotatedElement e) =>
+      ConstantReader(_ignoreAnnotation.firstAnnotationOf(e.element,
+              throwOnUnresolved: false))
+          .peek('inLocator')
+          ?.boolValue ==
+      true;
+
   Block _handleClassSingletons(AssetId assetId, LibraryReader lib,
       Reference locatorRef, Block setupLocatorBlock) {
     var block = setupLocatorBlock;
 
-    for (final AnnotatedElement(:annotation, element: Element(:displayName))
-        in lib
-            .annotatedWith(TypeChecker.fromRuntime(Singleton))
-            .where((element) => element.element is ClassElement)) {
+    for (final AnnotatedElement(:annotation, :element) in lib
+        .annotatedWith(_singletonAnnotation)
+        .where((element) => element.element is ClassElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       if (annotation.read('dependencies').isNull) {
         block = block.rebuild((b) => b
           ..addExpression(locatorRef.property('registerSingleton').call([
-            refer(displayName, assetId.uri.toString()).newInstance([]),
+            refer(element.displayName, assetId.uri.toString()).newInstance([]),
           ])));
       } else {
         final deps = annotation.read('dependencies').listValue;
@@ -136,7 +152,7 @@ class LocatorBuilder implements Builder {
           ..addExpression(
               locatorRef.property('registerSingletonWithDependencies').call([
             Method((b) => b
-              ..body = refer(displayName, assetId.uri.toString())
+              ..body = refer(element.displayName, assetId.uri.toString())
                   .newInstance([]).code).closure,
           ], {
             'dependsOn': literalList(deps
@@ -155,14 +171,14 @@ class LocatorBuilder implements Builder {
       Reference locatorRef, Block setupLocatorBlock) {
     var block = setupLocatorBlock;
 
-    for (final AnnotatedElement(:annotation, element: Element(:displayName))
-        in lib
-            .annotatedWith(TypeChecker.fromRuntime(Singleton))
-            .where((element) => element.element is FunctionElement)) {
+    for (final AnnotatedElement(:annotation, :element) in lib
+        .annotatedWith(_singletonAnnotation)
+        .where((element) => element.element is FunctionElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       if (annotation.read('dependencies').isNull) {
         block = block.rebuild((b) => b
           ..addExpression(locatorRef.property('registerSingleton').call([
-            refer(displayName, assetId.uri.toString()).call([]),
+            refer(element.displayName, assetId.uri.toString()).call([]),
           ])));
       } else {
         final deps = annotation.read('dependencies').listValue;
@@ -171,9 +187,8 @@ class LocatorBuilder implements Builder {
           ..addExpression(
               locatorRef.property('registerSingletonWithDependencies').call([
             Method((b) => b
-                  ..body =
-                      refer(displayName, assetId.uri.toString()).call([]).code)
-                .closure,
+              ..body = refer(element.displayName, assetId.uri.toString())
+                  .call([]).code).closure,
           ], {
             'dependsOn': literalList(deps
                 .map((d) => d.toTypeValue()?.element)
@@ -192,8 +207,9 @@ class LocatorBuilder implements Builder {
     var block = setupLocatorBlock;
 
     for (final AnnotatedElement(element: Element(:displayName)) in lib
-        .annotatedWith(TypeChecker.fromRuntime(LazySingleton))
-        .where((element) => element.element is ClassElement)) {
+        .annotatedWith(_lazySingletonAnnotation)
+        .where((element) => element.element is ClassElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       block = block.rebuild((b) => b
         ..addExpression(locatorRef.property('registerLazySingleton').call([
           Method((b) => b
@@ -210,8 +226,9 @@ class LocatorBuilder implements Builder {
     var block = setupLocatorBlock;
 
     for (final AnnotatedElement(element: Element(:displayName)) in lib
-        .annotatedWith(TypeChecker.fromRuntime(LazySingleton))
-        .where((element) => element.element is FunctionElement)) {
+        .annotatedWith(_lazySingletonAnnotation)
+        .where((element) => element.element is FunctionElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       block = block.rebuild((b) => b
         ..addExpression(locatorRef
             .property('registerLazySingleton')
@@ -226,8 +243,9 @@ class LocatorBuilder implements Builder {
     var block = setupLocatorBlock;
 
     for (final AnnotatedElement(:annotation, :element) in lib
-        .annotatedWith(TypeChecker.fromRuntime(AsyncSingleton))
-        .where((element) => element.element is ClassElement)) {
+        .annotatedWith(_asyncSingletonAnnotation)
+        .where((element) => element.element is ClassElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       if (annotation.read('factory').isNull) {
         throw InvalidGenerationSourceError(
             'AsyncSingleton must have a factory method if used on a class',
@@ -275,8 +293,9 @@ class LocatorBuilder implements Builder {
     var block = setupLocatorBlock;
 
     for (final AnnotatedElement(:annotation, :element) in lib
-        .annotatedWith(TypeChecker.fromRuntime(AsyncSingleton))
-        .where((element) => element.element is FunctionElement)) {
+        .annotatedWith(_asyncSingletonAnnotation)
+        .where((element) => element.element is FunctionElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       final factory = element as FunctionElement;
 
       var named = <String, Expression>{};
@@ -312,8 +331,9 @@ class LocatorBuilder implements Builder {
     var factoryExtension = locatorExtension;
 
     for (final AnnotatedElement(:element) in lib
-        .annotatedWith(TypeChecker.fromRuntime(Factory))
-        .where((element) => element.element is FunctionElement)) {
+        .annotatedWith(_factoryAnnotation)
+        .where((element) => element.element is FunctionElement)
+        .where((element) => !_hasIgnoreAnnotation(element))) {
       final func = element as FunctionElement;
 
       if (func.isPrivate) {

@@ -184,6 +184,41 @@ Future<void> setupLocator() async {
 '''
               },
               reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should ignore the dependency when annotation is present.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @Singleton()
+                @IgnoreDependency()
+                class ServiceA {}
+
+                class ServiceB {}
+
+                @Singleton()
+                @IgnoreDependency()
+                ServiceB factory() => ServiceB();
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
     });
 
     group('for LazySingletons', () {
@@ -249,6 +284,41 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(_i2.factory);
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should ignore the dependency when annotation is present.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @LazySingleton()
+                @IgnoreDependency()
+                class ServiceA {}
+
+                class ServiceB {}
+
+                @LazySingleton()
+                @IgnoreDependency()
+                ServiceB factory() => ServiceB();
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
   await _i1.locator.allReady();
@@ -437,6 +507,41 @@ Future<void> setupLocator() async {
     _i2.factory,
     dependsOn: [_i2.SvcA],
   );
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should ignore the dependency when annotation is present.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @AsyncSingleton()
+                @IgnoreDependency()
+                class ServiceA {}
+
+                class ServiceB {}
+
+                @AsyncSingleton()
+                @IgnoreDependency()
+                Future<ServiceB> factory() async => ServiceB();
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
   await _i1.locator.allReady();
@@ -765,6 +870,37 @@ extension Factories on _i1.Locator {
           expect(e, isA<InvalidGenerationSourceError>());
         }
       });
+
+      test(
+          'should ignore the dependency when annotation is present.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                class Svc {}
+
+                @Factory()
+                @IgnoreDependency()
+                Svc factory() => Svc();
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
     });
 
     group('with Builder Configuration', () {
