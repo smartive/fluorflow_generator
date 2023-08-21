@@ -903,6 +903,66 @@ Future<void> setupLocator() async {
               reader: await PackageAssetReader.currentIsolate()));
     });
 
+    group('for CustomLocatorFunctions', () {
+      test(
+          'should not include the custom function if not allowed to.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @CustomLocatorFunction(includeInLocator: false)
+                void customFunc() {}
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should include the custom function.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions.empty),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @CustomLocatorFunction()
+                void customFunc() {}
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:a/a.dart' as _i1;
+import 'package:fluorflow/fluorflow.dart' as _i2;
+
+Future<void> setupLocator() async {
+  _i1.customFunc();
+  _i2.locator.registerLazySingleton(() => _i2.NavigationService());
+  _i2.locator.registerLazySingleton(() => _i2.DialogService());
+  await _i2.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+    });
+
     group('with Builder Configuration', () {
       test(
           'should not generate something when no services are registered and all default services are disabled.',

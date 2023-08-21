@@ -70,6 +70,8 @@ class LocatorBuilder implements Builder {
           assetId, lib, locatorRef, setupLocatorBlock);
       (setupLocatorBlock, factoryExtension) = _handleClassFactories(
           assetId, lib, locatorRef, setupLocatorBlock, factoryExtension);
+      setupLocatorBlock = _handleCustomLocatorFunction(
+          assetId, lib, locatorRef, setupLocatorBlock);
     }
 
     if (options.registerNavigationService) {
@@ -423,5 +425,22 @@ class LocatorBuilder implements Builder {
     }
 
     return (block, factoryExtension);
+  }
+
+  Block _handleCustomLocatorFunction(AssetId assetId, LibraryReader lib,
+      Reference locatorRef, Block setupLocatorBlock) {
+    var block = setupLocatorBlock;
+
+    for (final AnnotatedElement(:element) in lib
+        .annotatedWith(_customLocatorAnnotation)
+        .where((element) => element.element is FunctionElement)
+        .where((element) =>
+            element.annotation.read('includeInLocator').boolValue)) {
+      block = block.rebuild((b) => b
+        ..addExpression(
+            refer(element.displayName, assetId.uri.toString()).call([])));
+    }
+
+    return block;
   }
 }
