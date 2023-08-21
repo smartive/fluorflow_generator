@@ -52,33 +52,32 @@ void main() {
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
 import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/mockito.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
+final class MockNavigationService extends _i1.Mock
+    with _i2.MockableNavigationService {}
 
-_i1.MockNavigationService getMockNavigationService() {
+MockNavigationService getMockNavigationService() {
   if (_i2.locator.isRegistered<_i2.NavigationService>()) {
     _i2.locator.unregister<_i2.NavigationService>();
   }
-  final service = _i1.MockNavigationService();
+  final service = MockNavigationService();
   _i2.locator.registerSingleton<_i2.NavigationService>(service);
   return service;
 }
 
-_i1.MockDialogService getMockDialogService() {
+final class MockDialogService extends _i1.Mock with _i2.MockableDialogService {}
+
+MockDialogService getMockDialogService() {
   if (_i2.locator.isRegistered<_i2.DialogService>()) {
     _i2.locator.unregister<_i2.DialogService>();
   }
-  final service = _i1.MockDialogService();
+  final service = MockDialogService();
   _i2.locator.registerSingleton<_i2.DialogService>(service);
   return service;
 }
 
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
+@_i3.GenerateNiceMocks([])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
@@ -482,33 +481,32 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
 import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/mockito.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
+final class MockNavigationService extends _i1.Mock
+    with _i2.MockableNavigationService {}
 
-_i1.MockNavigationService getMockNavigationService() {
+MockNavigationService getMockNavigationService() {
   if (_i2.locator.isRegistered<_i2.NavigationService>()) {
     _i2.locator.unregister<_i2.NavigationService>();
   }
-  final service = _i1.MockNavigationService();
+  final service = MockNavigationService();
   _i2.locator.registerSingleton<_i2.NavigationService>(service);
   return service;
 }
 
-_i1.MockDialogService getMockDialogService() {
+final class MockDialogService extends _i1.Mock with _i2.MockableDialogService {}
+
+MockDialogService getMockDialogService() {
   if (_i2.locator.isRegistered<_i2.DialogService>()) {
     _i2.locator.unregister<_i2.DialogService>();
   }
-  final service = _i1.MockDialogService();
+  final service = MockDialogService();
   _i2.locator.registerSingleton<_i2.DialogService>(service);
   return service;
 }
 
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
+@_i3.GenerateNiceMocks([])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
@@ -537,22 +535,20 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
 import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/mockito.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
+final class MockDialogService extends _i1.Mock with _i2.MockableDialogService {}
 
-_i1.MockDialogService getMockDialogService() {
+MockDialogService getMockDialogService() {
   if (_i2.locator.isRegistered<_i2.DialogService>()) {
     _i2.locator.unregister<_i2.DialogService>();
   }
-  final service = _i1.MockDialogService();
+  final service = MockDialogService();
   _i2.locator.registerSingleton<_i2.DialogService>(service);
   return service;
 }
 
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault)
-])
+@_i3.GenerateNiceMocks([])
 void setupTestLocator() {
   getMockDialogService();
 }
@@ -580,22 +576,21 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
 import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/mockito.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
+final class MockNavigationService extends _i1.Mock
+    with _i2.MockableNavigationService {}
 
-_i1.MockNavigationService getMockNavigationService() {
+MockNavigationService getMockNavigationService() {
   if (_i2.locator.isRegistered<_i2.NavigationService>()) {
     _i2.locator.unregister<_i2.NavigationService>();
   }
-  final service = _i1.MockNavigationService();
+  final service = MockNavigationService();
   _i2.locator.registerSingleton<_i2.NavigationService>(service);
   return service;
 }
 
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault)
-])
+@_i3.GenerateNiceMocks([])
 void setupTestLocator() {
   getMockNavigationService();
 }
@@ -635,7 +630,7 @@ void tearDownLocator() => _i2.locator.reset();
         test(
             'should ignore the dependency when annotation is present on $ca.',
             () async => await testBuilder(
-                TestLocatorBuilder(BuilderOptions.empty),
+                TestLocatorBuilder(noSvcs),
                 {
                   'a|lib/a.dart': '''
                 import 'package:fluorflow/annotations.dart';
@@ -651,39 +646,10 @@ void tearDownLocator() => _i2.locator.reset();
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
-import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/annotations.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
-
-_i1.MockNavigationService getMockNavigationService() {
-  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
-    _i2.locator.unregister<_i2.NavigationService>();
-  }
-  final service = _i1.MockNavigationService();
-  _i2.locator.registerSingleton<_i2.NavigationService>(service);
-  return service;
-}
-
-_i1.MockDialogService getMockDialogService() {
-  if (_i2.locator.isRegistered<_i2.DialogService>()) {
-    _i2.locator.unregister<_i2.DialogService>();
-  }
-  final service = _i1.MockDialogService();
-  _i2.locator.registerSingleton<_i2.DialogService>(service);
-  return service;
-}
-
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
-void setupTestLocator() {
-  getMockNavigationService();
-  getMockDialogService();
-}
-
+@_i1.GenerateNiceMocks([])
+void setupTestLocator() {}
 void tearDownLocator() => _i2.locator.reset();
 '''
                 },
@@ -699,7 +665,7 @@ void tearDownLocator() => _i2.locator.reset();
         test(
             'should ignore the dependency factory when annotation is present on $ca.',
             () async => await testBuilder(
-                TestLocatorBuilder(BuilderOptions.empty),
+                TestLocatorBuilder(noSvcs),
                 {
                   'a|lib/a.dart': '''
                 import 'package:fluorflow/annotations.dart';
@@ -717,39 +683,10 @@ void tearDownLocator() => _i2.locator.reset();
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
-import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/annotations.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
-
-_i1.MockNavigationService getMockNavigationService() {
-  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
-    _i2.locator.unregister<_i2.NavigationService>();
-  }
-  final service = _i1.MockNavigationService();
-  _i2.locator.registerSingleton<_i2.NavigationService>(service);
-  return service;
-}
-
-_i1.MockDialogService getMockDialogService() {
-  if (_i2.locator.isRegistered<_i2.DialogService>()) {
-    _i2.locator.unregister<_i2.DialogService>();
-  }
-  final service = _i1.MockDialogService();
-  _i2.locator.registerSingleton<_i2.DialogService>(service);
-  return service;
-}
-
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
-void setupTestLocator() {
-  getMockNavigationService();
-  getMockDialogService();
-}
-
+@_i1.GenerateNiceMocks([])
+void setupTestLocator() {}
 void tearDownLocator() => _i2.locator.reset();
 '''
                 },
@@ -761,7 +698,7 @@ void tearDownLocator() => _i2.locator.reset();
       test(
           'should not include the custom function if not allowed to.',
           () async => await testBuilder(
-              TestLocatorBuilder(BuilderOptions.empty),
+              TestLocatorBuilder(noSvcs),
               {
                 'a|lib/a.dart': '''
                 import 'package:fluorflow/annotations.dart';
@@ -776,39 +713,10 @@ void tearDownLocator() => _i2.locator.reset();
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:fluorflow/fluorflow.dart' as _i2;
-import 'package:mockito/annotations.dart' as _i3;
+import 'package:mockito/annotations.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
-
-_i1.MockNavigationService getMockNavigationService() {
-  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
-    _i2.locator.unregister<_i2.NavigationService>();
-  }
-  final service = _i1.MockNavigationService();
-  _i2.locator.registerSingleton<_i2.NavigationService>(service);
-  return service;
-}
-
-_i1.MockDialogService getMockDialogService() {
-  if (_i2.locator.isRegistered<_i2.DialogService>()) {
-    _i2.locator.unregister<_i2.DialogService>();
-  }
-  final service = _i1.MockDialogService();
-  _i2.locator.registerSingleton<_i2.DialogService>(service);
-  return service;
-}
-
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
-void setupTestLocator() {
-  getMockNavigationService();
-  getMockDialogService();
-}
-
+@_i1.GenerateNiceMocks([])
+void setupTestLocator() {}
 void tearDownLocator() => _i2.locator.reset();
 '''
               },
@@ -817,7 +725,7 @@ void tearDownLocator() => _i2.locator.reset();
       test(
           'should include the custom function.',
           () async => await testBuilder(
-              TestLocatorBuilder(BuilderOptions.empty),
+              TestLocatorBuilder(noSvcs),
               {
                 'a|lib/a.dart': '''
                 import 'package:fluorflow/annotations.dart';
@@ -831,43 +739,16 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:a/a.dart' as _i4;
-import 'package:fluorflow/fluorflow.dart' as _i2;
-import 'package:mockito/annotations.dart' as _i3;
+import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/fluorflow.dart' as _i3;
+import 'package:mockito/annotations.dart' as _i1;
 
-import 'test.locator.mocks.dart' as _i1;
-
-_i1.MockNavigationService getMockNavigationService() {
-  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
-    _i2.locator.unregister<_i2.NavigationService>();
-  }
-  final service = _i1.MockNavigationService();
-  _i2.locator.registerSingleton<_i2.NavigationService>(service);
-  return service;
-}
-
-_i1.MockDialogService getMockDialogService() {
-  if (_i2.locator.isRegistered<_i2.DialogService>()) {
-    _i2.locator.unregister<_i2.DialogService>();
-  }
-  final service = _i1.MockDialogService();
-  _i2.locator.registerSingleton<_i2.DialogService>(service);
-  return service;
-}
-
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
+@_i1.GenerateNiceMocks([])
 void setupTestLocator() {
-  _i4.customFunc();
-  getMockNavigationService();
-  getMockDialogService();
+  _i2.customFunc();
 }
 
-void tearDownLocator() => _i2.locator.reset();
+void tearDownLocator() => _i3.locator.reset();
 '''
               },
               reader: await PackageAssetReader.currentIsolate()));
@@ -875,7 +756,7 @@ void tearDownLocator() => _i2.locator.reset();
       test(
           'should include the custom function from test files.',
           () async => await testBuilder(
-              TestLocatorBuilder(BuilderOptions.empty),
+              TestLocatorBuilder(noSvcs),
               {
                 'a|test/a.dart': '''
                 import 'package:fluorflow/annotations.dart';
@@ -889,43 +770,17 @@ void tearDownLocator() => _i2.locator.reset();
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:fluorflow/fluorflow.dart' as _i2;
-import 'package:mockito/annotations.dart' as _i3;
+import 'package:fluorflow/fluorflow.dart' as _i3;
+import 'package:mockito/annotations.dart' as _i1;
 
-import 'a.dart' as _i4;
-import 'test.locator.mocks.dart' as _i1;
+import 'a.dart' as _i2;
 
-_i1.MockNavigationService getMockNavigationService() {
-  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
-    _i2.locator.unregister<_i2.NavigationService>();
-  }
-  final service = _i1.MockNavigationService();
-  _i2.locator.registerSingleton<_i2.NavigationService>(service);
-  return service;
-}
-
-_i1.MockDialogService getMockDialogService() {
-  if (_i2.locator.isRegistered<_i2.DialogService>()) {
-    _i2.locator.unregister<_i2.DialogService>();
-  }
-  final service = _i1.MockDialogService();
-  _i2.locator.registerSingleton<_i2.DialogService>(service);
-  return service;
-}
-
-@_i3.GenerateNiceMocks([
-  _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-  _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault),
-])
+@_i1.GenerateNiceMocks([])
 void setupTestLocator() {
-  _i4.customFunc();
-  getMockNavigationService();
-  getMockDialogService();
+  _i2.customFunc();
 }
 
-void tearDownLocator() => _i2.locator.reset();
+void tearDownLocator() => _i3.locator.reset();
 '''
               },
               reader: await PackageAssetReader.currentIsolate()));
