@@ -57,7 +57,7 @@ class TestLocatorBuilder implements Builder {
       ..name = 'setupTestLocator'
       ..returns = refer('void'));
 
-    final generatedMockTypes = List<Reference>.empty(growable: true);
+    final mockedTypes = List<Reference>.empty(growable: true);
 
     void addNonFactoryMock(Reference originalType, Reference mockType) {
       outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
@@ -76,17 +76,11 @@ class TestLocatorBuilder implements Builder {
     }
 
     void addInternalType(Reference internalType) {
-      final mockClass = Class((b) => b
-        ..name = 'Mock${internalType.symbol}'
-        ..extend = refer('Mock', 'package:mockito/mockito.dart')
-        ..mixins.add(refer('Mockable${internalType.symbol}',
-            'package:fluorflow/fluorflow.dart'))
-        ..modifier = ClassModifier.final$);
-
-      outputLib = outputLib.rebuild((b) => b.body.add(mockClass));
-      addNonFactoryMock(internalType, refer(mockClass.name));
+      final mockType = refer('Mock${internalType.symbol}', mocksUri);
+      mockedTypes.add(internalType);
+      addNonFactoryMock(internalType, mockType);
       setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild(
-          (b) => b.addExpression(refer('get${mockClass.name}').call([])));
+          (b) => b.addExpression(refer('get${mockType.symbol}').call([])));
     }
 
     await for (final assetId in buildStep.findAssets(_allDartFilesInLib)) {
@@ -121,7 +115,7 @@ class TestLocatorBuilder implements Builder {
               element: element),
         };
         final mockType = refer('Mock${originalType.symbol}', mocksUri);
-        generatedMockTypes.add(originalType);
+        mockedTypes.add(originalType);
 
         if (annotation.instanceOf(_nonFactory)) {
           addNonFactoryMock(originalType, mockType);
@@ -174,7 +168,7 @@ class TestLocatorBuilder implements Builder {
       ..body = setupTestLocatorMethodBody
       ..annotations.add(
           refer('GenerateNiceMocks', 'package:mockito/annotations.dart').call([
-        literalList(generatedMockTypes.map((t) =>
+        literalList(mockedTypes.map((t) =>
             refer('MockSpec', 'package:mockito/annotations.dart')
                 .newInstance([], {
               'onMissingStub':
