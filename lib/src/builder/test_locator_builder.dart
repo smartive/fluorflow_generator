@@ -21,7 +21,8 @@ extension on BuilderOptions {
 }
 
 class TestLocatorBuilder implements Builder {
-  static final _allDartFilesInLib = Glob('{lib/*.dart,lib/**/*.dart}');
+  static final _allDartFilesInLib =
+      Glob('{lib/*.dart,lib/**/*.dart,test/*.dart,test/**/*.dart}');
   static final _ignoreAnnotation = TypeChecker.fromRuntime(IgnoreDependency);
   static final _customLocatorAnnotation =
       TypeChecker.fromRuntime(CustomLocatorFunction);
