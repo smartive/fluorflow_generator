@@ -22,6 +22,15 @@ extension on BuilderOptions {
 
 class TestLocatorBuilder implements Builder {
   static final _allDartFilesInLib = Glob('{lib/*.dart,lib/**/*.dart}');
+  static final _ignoreAnnotation = TypeChecker.fromRuntime(IgnoreDependency);
+  static final _customLocatorAnnotation =
+      TypeChecker.fromRuntime(CustomLocatorFunction);
+  static final _isFactory = TypeChecker.fromRuntime(Factory);
+  static final _nonFactory = TypeChecker.any([
+    TypeChecker.fromRuntime(Singleton),
+    TypeChecker.fromRuntime(AsyncSingleton),
+    TypeChecker.fromRuntime(LazySingleton),
+  ]);
 
   final BuilderOptions options;
 
@@ -48,13 +57,6 @@ class TestLocatorBuilder implements Builder {
       ..returns = refer('void'));
 
     final mockedTypes = List<Reference>.empty(growable: true);
-
-    final isFactory = TypeChecker.fromRuntime(Factory);
-    final nonFactory = TypeChecker.any([
-      TypeChecker.fromRuntime(Singleton),
-      TypeChecker.fromRuntime(AsyncSingleton),
-      TypeChecker.fromRuntime(LazySingleton),
-    ]);
 
     void addNonFactoryMock(Reference originalType, Reference mockType) {
       outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
@@ -87,11 +89,12 @@ class TestLocatorBuilder implements Builder {
 
       final lib = LibraryReader(await resolver.libraryFor(assetId));
 
-      for (final AnnotatedElement(:annotation, :element)
-          in lib.annotatedWith(TypeChecker.any([
-        nonFactory,
-        isFactory,
-      ]))) {
+      for (final AnnotatedElement(:annotation, :element) in lib
+          .annotatedWith(TypeChecker.any([
+            _nonFactory,
+            _isFactory,
+          ]))
+          .where((element) => !_hasIgnoreAnnotation(element))) {
         // For all annotations (except Factory), the mocked element is either
         // the annotated class or the returnvalue of the factory function.
         // For all factories (Factory annotations), the mocked element is the
@@ -113,7 +116,7 @@ class TestLocatorBuilder implements Builder {
         final mockType = refer('Mock${originalType.symbol}', mocksUri);
         mockedTypes.add(originalType);
 
-        if (annotation.instanceOf(nonFactory)) {
+        if (annotation.instanceOf(_nonFactory)) {
           addNonFactoryMock(originalType, mockType);
         } else {
           outputLib = outputLib.rebuild((b) => b.body.add(Method((b) => b
@@ -136,6 +139,16 @@ class TestLocatorBuilder implements Builder {
 
         setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild(
             (b) => b.addExpression(refer('get${mockType.symbol}').call([])));
+      }
+
+      for (final AnnotatedElement(:element) in lib
+          .annotatedWith(_customLocatorAnnotation)
+          .where((element) => element.element is FunctionElement)
+          .where((element) =>
+              element.annotation.read('includeInTestLocator').boolValue)) {
+        setupTestLocatorMethodBody = setupTestLocatorMethodBody.rebuild((b) =>
+            b.addExpression(
+                refer(element.displayName, assetId.uri.toString()).call([])));
       }
     }
 
@@ -183,4 +196,11 @@ class TestLocatorBuilder implements Builder {
   Map<String, List<String>> get buildExtensions => {
         r'lib/$lib$': [options.output],
       };
+
+  bool _hasIgnoreAnnotation(AnnotatedElement e) =>
+      ConstantReader(_ignoreAnnotation.firstAnnotationOf(e.element,
+              throwOnUnresolved: false))
+          .peek('inTestLocator')
+          ?.boolValue ==
+      true;
 }
