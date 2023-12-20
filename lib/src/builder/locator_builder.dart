@@ -19,6 +19,9 @@ extension on BuilderOptions {
   bool get registerNavigationService => registerServices['navigation'] ?? true;
 
   bool get registerDialogService => registerServices['dialog'] ?? true;
+
+  bool get registerBottomSheetService =>
+      registerServices['bottomSheet'] ?? true;
 }
 
 class LocatorBuilder implements Builder {
@@ -90,6 +93,16 @@ class LocatorBuilder implements Builder {
           Method((b) => b
             ..body = refer('DialogService', 'package:fluorflow/fluorflow.dart')
                 .newInstance([]).code).closure,
+        ])));
+    }
+
+    if (options.registerBottomSheetService) {
+      setupLocatorBlock = setupLocatorBlock.rebuild((b) => b
+        ..addExpression(locatorRef.property('registerLazySingleton').call([
+          Method((b) => b
+            ..body =
+                refer('BottomSheetService', 'package:fluorflow/fluorflow.dart')
+                    .newInstance([]).code).closure,
         ])));
     }
 

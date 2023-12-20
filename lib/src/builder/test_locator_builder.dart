@@ -18,6 +18,8 @@ extension on BuilderOptions {
   bool get mockNavService => services['navigation'] ?? true;
 
   bool get mockDialogService => services['dialog'] ?? true;
+
+  bool get mockBottomSheetService => services['bottomSheet'] ?? true;
 }
 
 class TestLocatorBuilder implements Builder {
@@ -162,6 +164,11 @@ class TestLocatorBuilder implements Builder {
     if (options.mockDialogService) {
       addInternalType(
           refer('DialogService', 'package:fluorflow/fluorflow.dart'));
+    }
+
+    if (options.mockBottomSheetService) {
+      addInternalType(
+          refer('BottomSheetService', 'package:fluorflow/fluorflow.dart'));
     }
 
     setupTestLocatorMethod = setupTestLocatorMethod.rebuild((b) => b

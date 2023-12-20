@@ -10,8 +10,9 @@ builders:
         emitAllReady: true
         output: 'lib/app.locator.dart'
         register_services:
-          navigation: true
+          bottomSheet: true
           dialog: true
+          navigation: true
 
   testLocator:
     import: 'package:fluorflow_generator/builder.dart'
@@ -27,8 +28,9 @@ builders:
       options:
         output: 'test/test.locator.dart'
         services:
-          navigation: true
+          bottomSheet: true
           dialog: true
+          navigation: true
 
   router:
     import: 'package:fluorflow_generator/builder.dart'
@@ -49,3 +51,13 @@ builders:
     defaults:
       options:
         output: 'lib/app.dialogs.dart'
+  
+  bottomSheet:
+    import: 'package:fluorflow_generator/builder.dart'
+    builder_factories: ['bottomSheetBuilder']
+    build_extensions: { 'lib/$lib$': ['lib/app.bottom_sheets.dart'] }
+    auto_apply: root_package
+    build_to: source
+    defaults:
+      options:
+        output: 'lib/app.bottom_sheets.dart'

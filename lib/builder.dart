@@ -1,5 +1,6 @@
 import 'package:build/build.dart';
 
+import 'src/builder/bottom_sheet_builder.dart';
 import 'src/builder/dialog_builder.dart';
 import 'src/builder/locator_builder.dart';
 import 'src/builder/router_builder.dart';
@@ -13,3 +14,6 @@ Builder testLocatorBuilder(BuilderOptions options) =>
 Builder routerBuilder(BuilderOptions options) => RouterBuilder(options);
 
 Builder dialogBuilder(BuilderOptions options) => DialogBuilder(options);
+
+Builder bottomSheetBuilder(BuilderOptions options) =>
+    BottomSheetBuilder(options);
