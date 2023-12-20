@@ -92,12 +92,18 @@ class BottomSheetBuilder implements Builder {
             ..name = 'fullscreen'
             ..type = refer('bool')
             ..named = true
-            ..defaultTo = literalBool(false).code))
+            ..defaultTo = literalBool(
+                    configAnnotation?.read('defaultFullscreen').boolValue ??
+                        false)
+                .code))
           ..optionalParameters.add(Parameter((b) => b
             ..name = 'draggable'
             ..type = refer('bool')
             ..named = true
-            ..defaultTo = literalBool(true).code))
+            ..defaultTo = literalBool(
+                    configAnnotation?.read('defaultDraggable').boolValue ??
+                        true)
+                .code))
           ..optionalParameters.addAll(params.map((p) => Parameter((b) => b
             ..name = p.name
             ..type = refer(p.type.getDisplayString(withNullability: true),
@@ -108,7 +114,15 @@ class BottomSheetBuilder implements Builder {
           ..body = refer('showBottomSheet')
               .call([
                 refer(sheetClass.displayName, assetId.uri.toString())
-                    .newInstance([], {'completer': refer('closeSheet')}),
+                    .newInstance(
+                        params
+                            .where((p) => p.isPositional)
+                            .map((p) => refer(p.name)),
+                        {
+                      'completer': refer('closeSheet'),
+                      for (final p in params.where((p) => p.isNamed))
+                        p.name: refer(p.name)
+                    }),
               ], {
                 'barrierColor': refer('barrierColor'),
                 'fullscreen': refer('fullscreen'),
