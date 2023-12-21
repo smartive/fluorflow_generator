@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('TestLocatorBuilder', () {
     final noSvcs = BuilderOptions({
-      'services': {'navigation': false, 'dialog': false},
+      'services': {'navigation': false, 'dialog': false, 'bottomSheet': false},
     });
 
     test('should not run when mockito is not installed.', () async {
@@ -73,15 +73,27 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -503,15 +515,27 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -549,12 +573,24 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.DialogService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault)
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -592,12 +628,79 @@ _i1.MockNavigationService getMockNavigationService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
-      onMissingStub: _i3.OnMissingStub.returnDefault)
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
+  getMockBottomSheetService();
+}
+
+void tearDownLocator() => _i2.locator.reset();
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should not mock buttom sheet service when disabled.',
+          () async => await testBuilder(
+              TestLocatorBuilder(BuilderOptions({
+                'services': {'bottomSheet': false},
+              })),
+              {
+                'a|lib/a.dart': '''
+                class View {}
+              '''
+              },
+              outputs: {
+                'a|test/test.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:fluorflow/fluorflow.dart' as _i2;
+import 'package:mockito/annotations.dart' as _i3;
+
+import 'test.locator.mocks.dart' as _i1;
+
+_i1.MockNavigationService getMockNavigationService() {
+  if (_i2.locator.isRegistered<_i2.NavigationService>()) {
+    _i2.locator.unregister<_i2.NavigationService>();
+  }
+  final service = _i1.MockNavigationService();
+  _i2.locator.registerSingleton<_i2.NavigationService>(service);
+  return service;
+}
+
+_i1.MockDialogService getMockDialogService() {
+  if (_i2.locator.isRegistered<_i2.DialogService>()) {
+    _i2.locator.unregister<_i2.DialogService>();
+  }
+  final service = _i1.MockDialogService();
+  _i2.locator.registerSingleton<_i2.DialogService>(service);
+  return service;
+}
+
+@_i3.GenerateNiceMocks([
+  _i3.MockSpec<_i2.NavigationService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.DialogService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+])
+void setupTestLocator() {
+  getMockNavigationService();
+  getMockDialogService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -673,15 +776,27 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -739,15 +854,27 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -798,15 +925,27 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -855,16 +994,28 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   _i4.customFunc();
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();
@@ -913,16 +1064,28 @@ _i1.MockDialogService getMockDialogService() {
   return service;
 }
 
+_i1.MockBottomSheetService getMockBottomSheetService() {
+  if (_i2.locator.isRegistered<_i2.BottomSheetService>()) {
+    _i2.locator.unregister<_i2.BottomSheetService>();
+  }
+  final service = _i1.MockBottomSheetService();
+  _i2.locator.registerSingleton<_i2.BottomSheetService>(service);
+  return service;
+}
+
 @_i3.GenerateNiceMocks([
   _i3.MockSpec<_i2.NavigationService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
   _i3.MockSpec<_i2.DialogService>(
+      onMissingStub: _i3.OnMissingStub.returnDefault),
+  _i3.MockSpec<_i2.BottomSheetService>(
       onMissingStub: _i3.OnMissingStub.returnDefault),
 ])
 void setupTestLocator() {
   _i4.customFunc();
   getMockNavigationService();
   getMockDialogService();
+  getMockBottomSheetService();
 }
 
 void tearDownLocator() => _i2.locator.reset();

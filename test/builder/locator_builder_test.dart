@@ -27,6 +27,7 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -65,6 +66,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i3.ServiceB());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -108,6 +110,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i3.ServiceB());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -140,6 +143,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.factory());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -179,6 +183,7 @@ Future<void> setupLocator() async {
   );
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -219,6 +224,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i3.ServiceB());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -251,6 +257,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(_i2.factory);
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -297,6 +304,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i3.createService);
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -368,6 +376,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i3.createService);
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -400,6 +409,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingletonAsync(_i2.factory);
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -439,6 +449,7 @@ Future<void> setupLocator() async {
   );
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -473,6 +484,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerFactory(() => _i2.factory());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -507,6 +519,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerFactory(() => _i2.factory());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -546,6 +559,7 @@ Future<void> setupLocator() async {
       _i2.factory(p1));
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 
@@ -595,6 +609,7 @@ Future<void> setupLocator() async {
       _i3.factory(p1));
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 
@@ -644,6 +659,7 @@ Future<void> setupLocator() async {
       ));
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 
@@ -706,6 +722,7 @@ Future<void> setupLocator() async {
       ));
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 
@@ -792,6 +809,7 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -830,6 +848,7 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -861,6 +880,7 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -891,6 +911,7 @@ Future<void> setupLocator() async {
   _i1.customFunc();
   _i2.locator.registerLazySingleton(() => _i2.NavigationService());
   _i2.locator.registerLazySingleton(() => _i2.DialogService());
+  _i2.locator.registerLazySingleton(() => _i2.BottomSheetService());
   await _i2.locator.allReady();
 }
 '''
@@ -906,6 +927,7 @@ Future<void> setupLocator() async {
                     'register_services': {
                       'navigation': false,
                       'dialog': false,
+                      'bottomSheet': false
                     }
                   })),
                   {
@@ -941,6 +963,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
 }
 '''
               },
@@ -972,6 +995,7 @@ Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -1003,6 +1027,7 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
   _i1.locator.registerLazySingleton(() => _i1.DialogService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
   await _i1.locator.allReady();
 }
 '''
@@ -1034,6 +1059,39 @@ import 'package:fluorflow/fluorflow.dart' as _i1;
 Future<void> setupLocator() async {
   _i1.locator.registerSingleton(_i2.ServiceA());
   _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.BottomSheetService());
+  await _i1.locator.allReady();
+}
+'''
+              },
+              reader: await PackageAssetReader.currentIsolate()));
+
+      test(
+          'should not register BottomSheetService when disabled.',
+          () async => await testBuilder(
+              LocatorBuilder(BuilderOptions({
+                'register_services': {'bottomSheet': false},
+              })),
+              {
+                'a|lib/a.dart': '''
+                import 'package:fluorflow/annotations.dart';
+
+                @Singleton()
+                class ServiceA {}
+              '''
+              },
+              outputs: {
+                'a|lib/app.locator.dart': '''
+// ignore_for_file: type=lint
+
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:a/a.dart' as _i2;
+import 'package:fluorflow/fluorflow.dart' as _i1;
+
+Future<void> setupLocator() async {
+  _i1.locator.registerSingleton(_i2.ServiceA());
+  _i1.locator.registerLazySingleton(() => _i1.NavigationService());
+  _i1.locator.registerLazySingleton(() => _i1.DialogService());
   await _i1.locator.allReady();
 }
 '''
